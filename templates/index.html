@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chatroom</title>
+    
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
     <style>
         body { font-family: Arial, sans-serif; }
         #messages { margin-bottom: 20px; }
@@ -13,7 +15,7 @@
 </head>
 <body>
     <h1>Chatroom</h1>
-
+    <img alt="img" style="width:100px; height:100px;" src="{{url_for('static', filename='test.png')}}" type="image/png" >
     <div id="messages" style="overflow-y: scroll; background: rgb(221, 214, 214); width:90%; height:100px; border: 1px solid black;"></div> <!-- Where messages will appear -->
     <input type="text" id="input" placeholder="Type a message..." />
     
