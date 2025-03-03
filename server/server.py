@@ -1,13 +1,15 @@
 from flask import Flask, render_template
 from flask_socketio import SocketIO
+import uuid
 
-app = Flask(__name__, template_folder='../templates')
+app = Flask(__name__, template_folder='../templates', static_folder='../static')
 
 socketio = SocketIO(app);
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    favicon_version = str(uuid.uuid4())
+    return render_template('index.html', favicon_version=favicon_version)
 
 @socketio.on('message')
 def handle_message(msg):
