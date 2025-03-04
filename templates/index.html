@@ -4,11 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chatroom</title>
-    
-    <!-- <link rel="icon" href="{{ url_for('static', filename='icon.png') }}" type="image/png"> -->
-
     <link rel="icon" href="{{ url_for('static', filename='icon.png') }}?v={{ favicon_version }}" type="image/png">
-
+    <script src="https://cdn.socket.io/4.1.3/socket.io.min.js"></script>
+    
     <style>
         body { font-family: Arial, sans-serif; }
         #messages { margin-bottom: 20px; }
@@ -22,28 +20,29 @@
     <div id="messages" style="overflow-y: scroll; background: rgb(221, 214, 214); width:90%; height:100px; border: 1px solid black;"></div> <!-- Where messages will appear -->
     <input type="text" id="input" placeholder="Type a message..." />
     
-    <script src="https://cdn.socket.io/4.1.3/socket.io.min.js"></script>
+    
     <script>
-        var socket = io(); 
-        var input = document.getElementById("input");
-        var messagesDiv = document.getElementById("messages");
+        // var socket = io(); 
+        // var input = document.getElementById("input");
+        // var messagesDiv = document.getElementById("messages");
 
-        // listen for messages
-        socket.on('message', function(msg) {
-            var messageDiv = document.createElement("div");
-            messageDiv.textContent = msg;
-            // messageDiv.innerHTML = "message sent";
-            messagesDiv.appendChild(messageDiv); //adds div containing the new mseaage to the messages container
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        });
+        // // listen for messages
+        // socket.on('message', function(msg) {
+        //     var messageDiv = document.createElement("div");
+        //     messageDiv.textContent = msg;
+        //     // messageDiv.innerHTML = "message sent";
+        //     messagesDiv.appendChild(messageDiv); //adds div containing the new mseaage to the messages container
+        //     messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        // });
 
-        // send message
-        input.addEventListener("keypress", function(event) {
-            if (event.key === "Enter" && input.value.trim()) {
-                socket.send(input.value); // sends msg to server
-                input.value = ""; // clears input field for user
-            }
-        });
+        // // send message
+        // input.addEventListener("keypress", function(event) {
+        //     if (event.key === "Enter" && input.value.trim()) {
+        //         socket.send(input.value); // sends msg to server
+        //         input.value = ""; // clears input field for user
+        //     }
+        // });
     </script>
+    <script src="/static/script.js"></script>
 </body>
 </html>
