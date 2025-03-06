@@ -18,9 +18,35 @@ This project is a simple chatroom application built using Flask and Flask-Socket
 - HTML
 - CSS
 - JavaScript
+- [Datamuse API](https://www.datamuse.com/api/)
 
 ## Usage
 
 1. Open your web browser and navigate to `http://localhost:5000` to access the chatroom.
 
 2. Begin chatting anonymously in real time by typing into the provided text box.
+
+## Datamuse API
+
+The Datamuse API is used to provide autocomplete suggestions for words as users type in the chat input box. The API offers a wide range of word-related functionalities, including word suggestions, synonyms, antonyms, and more.
+
+## Project Structure
+compnetworks-chatroom/
+│
+├── static/
+│   ├── style.css
+│   └── script.js
+│
+├── templates/
+│   └── index.html
+│
+├── [server.py](http://_vscodecontentref_/1)
+├── [requirements.txt](http://_vscodecontentref_/2)
+└── [README.md](http://_vscodecontentref_/3)
+
+- server.py: The main server-side script that handles user connections and messaging.
+- static/style.css: The CSS file for styling the chatroom.
+- static/script.js: The JavaScript file for handling client-side interactions.
+- templates/index.html: The HTML template for the chatroom interface.
+- requirements.txt: The list of required Python packages.
+- README.md: This file.
