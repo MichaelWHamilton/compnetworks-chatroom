@@ -31,22 +31,14 @@ This project is a simple chatroom application built using Flask and Flask-Socket
 The Datamuse API is used to provide autocomplete suggestions for words as users type in the chat input box. The API offers a wide range of word-related functionalities, including word suggestions, synonyms, antonyms, and more.
 
 ## Project Structure
-compnetworks-chatroom/
-│
-├── static/
-│   ├── style.css
-│   └── script.js
-│
-├── templates/
-│   └── index.html
-│
-├── [server.py](http://_vscodecontentref_/1)
-├── [requirements.txt](http://_vscodecontentref_/2)
-└── [README.md](http://_vscodecontentref_/3)
-
 - server.py: The main server-side script that handles user connections and messaging.
 - static/style.css: The CSS file for styling the chatroom.
 - static/script.js: The JavaScript file for handling client-side interactions.
 - templates/index.html: The HTML template for the chatroom interface.
 - requirements.txt: The list of required Python packages.
 - README.md: This file.
+
+## Acknowledgements
+- [Flask](https://flask.palletsprojects.com/en/stable/)
+- [Flask-SocketIO](https://flask-socketio.readthedocs.io/)
+- [Datamuse API](https://www.datamuse.com/api/)
