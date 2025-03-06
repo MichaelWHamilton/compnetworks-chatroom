@@ -4,6 +4,7 @@ var socket = io();
 var username = "";
 var input = document.getElementById("input");
 var messagesDiv = document.getElementById("messages");
+var toggleModeButton = document.getElementById("toggleMode");
 
 // Object to store colors for each username
 var userColors = {};
@@ -95,3 +96,15 @@ function sendMessage() {
     }
     document.getElementById("messageInput").value="";
 }
+
+// Toggle dark/light mode
+toggleModeButton.addEventListener("click", function() {
+    var body = document.body;
+    if (body.classList.contains("dark-mode")) {
+        body.classList.remove("dark-mode");
+        body.classList.add("light-mode");
+    } else {
+        body.classList.remove("light-mode");
+        body.classList.add("dark-mode");
+    }
+});
