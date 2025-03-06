@@ -8,9 +8,10 @@ body {
     margin-bottom: 20px;
     overflow-y: scroll;
     background-color: rgb(0, 0, 0);
-    width: 90%;
-    height: 100px;
+    width: 99%;
+    height: 70rem;
     border: 1px solid black;
+    border-radius: 10px;
     margin-left: 0;
     padding: 10px;
     text-align: left;
@@ -19,10 +20,15 @@ body {
 #messages div {
     padding: 5px;
     margin: 2px 0;
+    background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white background */
+    border-radius: 10px;
+    display: block;
+    word-wrap: break-word; /* Ensure text wraps to a new line */
+    white-space: normal; /* Allow text wrapping */
 }
 
 #input {
-    width: 100%;
+    width: 99%;
     padding: 10px;
     margin-top: 10px;
 }
