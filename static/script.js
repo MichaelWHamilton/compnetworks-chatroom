@@ -18,6 +18,16 @@ function getRandomColor() {
     return color;
 }
 
+// Function to format message text with username colors
+function formatMessageText(text) {
+    return text.replace(/User-\d{4}/g, function(match) {
+        if (userColors[match]) {
+            return `<span style="color: ${userColors[match].usernameColor}; font-weight: bold;">${match}</span>`;
+        }
+        return match;
+    });
+}
+
 // listen for messages
 socket.on('message', function(data) {
     var messageDiv = document.createElement("div");
@@ -34,10 +44,11 @@ socket.on('message', function(data) {
     var usernameSpan = document.createElement("span");
     usernameSpan.textContent = data.username + ": ";
     usernameSpan.style.color = userColors[data.username].usernameColor;
+    usernameSpan.style.fontWeight = "bold"; // Make username bold
 
     // Create message span
     var messageSpan = document.createElement("span");
-    messageSpan.textContent = data.message;
+    messageSpan.innerHTML = formatMessageText(data.message); // Format message text
     messageSpan.style.color = userColors[data.username].messageColor;
 
     // Append username and message to messageDiv
