@@ -5,8 +5,12 @@ var messagesDiv = document.getElementById("messages");
 var toggleModeButton = document.getElementById("toggleMode");
 var autocompleteBox = document.getElementById("autocomplete-box");
 
+var pendingFile = null;
+var fileInput = document.getElementById("fileInput");
+
 // Object to store colors for each username
 var userColors = {};
+
 
 // Function to generate a random color
 function getRandomColor() {
@@ -107,29 +111,40 @@ socket.on('message', function(data) {
 
     // Create message span
     var messageSpan = document.createElement("span");
-    messageSpan.innerHTML = formatMessageText(data.message);
-    messageSpan.style.color = userColors[data.username].messageColor;
+
+    if(data.file_url) {
+        var fileLink = document.createElement("a");
+        fileLink.href = `http://localhost:5000${data.file_url}`;
+        fileLink.textContent = data.message;
+        fileLink.target = "_blank";
+
+        messageSpan.appendChild(fileLink);
+    }
+    else{
+        messageSpan.innerHTML = formatMessageText(data.message);
+        messageSpan.style.color = userColors[data.username].messageColor;
+    }
 
     // Append username and message to messageDiv
     messageDiv.appendChild(usernameSpan);
     messageDiv.appendChild(messageSpan);
-
     messagesDiv.appendChild(messageDiv);
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
 });
 
 // Send message ensuring username is included
-input.addEventListener("keypress", function(event) {
-    if (event.key === "Enter" && input.value.trim()) {
-        var message = input.value;
-        console.log("📤 Sending msg: ", message);
+//TODO: come back here after
+// input.addEventListener("keypress", function(event) {
+//     if (event.key === "Enter" && input.value.trim()) {
+//         var message = input.value;
+//         console.log("📤 Sending msg: ", message);
 
-        socket.emit('message', { username: username, message: message });
+//         socket.emit('message', { username: username, message: message });
 
-        input.value = "";
-        autocompleteBox.innerHTML = ""; // Clear suggestions
-    }
-});
+//         input.value = "";
+//         autocompleteBox.innerHTML = ""; // Clear suggestions
+//     }
+// });
 
 socket.on('connect', function(){
     console.log("connected to websocket server");
@@ -152,3 +167,109 @@ toggleModeButton.addEventListener("click", function() {
         body.classList.add("dark-mode");
     }
 });
+
+
+
+
+/***********   Upload files   **********/
+
+function uploadFile(file) {
+    // if(!file) {
+    //     alert("Please select a file first!");
+    //     return;
+    // }
+    
+    let formData = new FormData();
+    formData.append("file", file);
+    formData.append("username", username);
+
+    fetch("http://localhost:5000/upload", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        
+        if(data.file_url) {
+            
+            // socket.emit("message", {
+            //     username: username,
+            //     message: `Uploaded a file: ${data.file_name}`,
+            //     file_url: data.file_url
+            // });
+            fileUploadAlert("success", `Your file "${data.file_name}" was successfully uploaded!`);
+        }
+        else {
+            fileUploadAlert("fail", "File upload failed: " + data.error);
+        }
+    })
+    .catch(error => console.error("Error:", error));
+}
+
+function fileUploadAlert(status, message) {
+
+    const alertStyles={
+        success: {backgroundColor: "#4CAF50", textColor: "white"},
+        fail: {backgroundColor: "#f44336", textColor: "white"}
+    }
+
+    let alertBox = document.createElement("div");
+    alertBox.textContent = message;
+
+
+
+    alertBox.style.backgroundColor = alertStyles[status]?.backgroundColor || "gray";
+    alertBox.style.color = alertStyles[status]?.textColor || "white";
+    
+    document.body.appendChild(alertBox);
+
+    alertBox.scrollIntoView({ behavior: "smooth", block: "center" });
+    
+    setTimeout(() => alertBox.remove(), 5000);
+};
+
+//assign file
+fileInput.addEventListener("change", function(){
+    if(fileInput.files.length > 0){
+        pendingFile = fileInput.files[0];
+        input.value = `[File ready to be sent: ${pendingFile.name}]`;
+    }
+});
+
+
+
+//****sending messages or files***** //
+
+//handle send button click
+sendButton.addEventListener("click", function(){
+    sendMessageOrFile();
+});
+
+//handle enter press for sending
+input.addEventListener("keypress", function(event){
+    if(event.key === "Enter" && input.value.trim()){
+        sendMessageOrFile();
+    }
+});
+
+
+
+/*******   Handle files and messaging   ******/
+
+//handle sending message or file 
+function sendMessageOrFile() {
+    if(pendingFile){
+        uploadFile(pendingFile);
+        pendingFile = null;
+        input.value = "";
+    }
+    else{
+        var message = input.value;
+        console.log("📤 Sending msg: ", message);
+
+        socket.emit("message", {username: username, message: message});
+        input.value = "";
+        autocompleteBox.innerHTML = "";
+    }
+}
+

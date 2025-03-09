@@ -33,10 +33,20 @@
     <button id="toggleMode">Toggle Dark/Light Mode</button>
     <div id="messages"></div> <!-- Where messages will appear -->
     
-    <div style="position: relative; width: 90%; margin: auto;">
+    
+    <div style="position: relative; width: 90%; margin: auto; display: flex; align-items: center;">
+        <button onclick="document.getElementById('fileInput').click()">+</button>
+        <input type="file" id="fileInput" accept=".txt" style="display: none">
         <input type="text" id="input" placeholder="Type a message..." autocomplete="off" />
-        <div id="autocomplete-box" class="autocomplete-suggestions"></div>
+        <button id="sendButton">➤</button>
+        <div style="display:block" id="autocomplete-box" class="autocomplete-suggestions"></div>
     </div>
+
+    <!-- <div>
+        <button onclick="document.getElementById('fileInput').click()">+</button>
+        <input type="file" id="fileInput" accept=".txt" style="display:none">
+        <button onclick="uploadFile()">Upload</button>
+    </div> -->
 
     <script src="/static/script.js"></script>
 </body>
