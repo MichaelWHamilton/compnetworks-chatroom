@@ -11,6 +11,7 @@
     <style>
         /* 🔹 Autocomplete Box */
         .autocomplete-suggestions {
+            display : none;
             position: absolute;
             background: white;
             border: 1px solid #ccc;
@@ -34,12 +35,12 @@
     <div id="messages"></div> <!-- Where messages will appear -->
     
     
-    <div style="position: relative; width: 90%; margin: auto; display: flex; align-items: center;">
+    <div id="inputmsg" style="position: relative; width: 90%; margin: auto; display: flex; align-items: center;">
         <button onclick="document.getElementById('fileInput').click()">+</button>
         <input type="file" id="fileInput" accept=".txt" style="display: none">
         <input type="text" id="input" placeholder="Type a message..." autocomplete="off" />
         <button id="sendButton">➤</button>
-        <div style="display:block" id="autocomplete-box" class="autocomplete-suggestions"></div>
+        <div id="autocomplete-box" class="autocomplete-suggestions"></div>
     </div>
 
     <!-- <div>

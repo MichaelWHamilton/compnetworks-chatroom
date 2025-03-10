@@ -46,6 +46,7 @@ input.addEventListener("input", async function() {
 
     if (lastWord.length < 2) {
         autocompleteBox.innerHTML = "";
+        autocompleteBox.style.display = "none";
         return;
     }
 
@@ -53,6 +54,7 @@ input.addEventListener("input", async function() {
     autocompleteBox.innerHTML = "";
 
     if (matches.length > 0) {
+        autocompleteBox.style.display = "block";
         matches.forEach(word => {
             let suggestion = document.createElement("div");
             suggestion.textContent = word;
@@ -62,9 +64,13 @@ input.addEventListener("input", async function() {
                 words.push(word);
                 input.value = words.join(" ") + " ";
                 autocompleteBox.innerHTML = "";
+                autocompleteBox.style.display = "none";
             };
             autocompleteBox.appendChild(suggestion);
         });
+    }
+    else{
+        autocompleteBox.style.display= "none";
     }
 });
 
@@ -90,6 +96,22 @@ input.addEventListener("keydown", function(event) {
         event.preventDefault();
     }
 });
+
+// Hide autocomplete on Enter
+input.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+        autocompleteBox.style.display = "none";
+    }
+});
+
+// Hide autocomplete when clicking outside
+document.addEventListener("click", function (event) {
+    if (!autocompleteBox.contains(event.target) && event.target !== input) {
+        autocompleteBox.style.display = "none";
+    }
+});
+
+
 
 // Listen for messages
 socket.on('message', function(data) {
@@ -155,6 +177,7 @@ socket.on('set_username', function(data){
     username = data.username;
     console.log("Username: ", username);
 });
+
 
 // Toggle dark/light mode
 toggleModeButton.addEventListener("click", function() {
