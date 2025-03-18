@@ -14,7 +14,7 @@ socketio = SocketIO(app)
 #uploading files/file types
 UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True) #creates folder if not already there
-ALLOWED_EXTENSIONS = {'txt'}
+ALLOWED_EXTENSIONS = {'txt', 'jpg', 'jpeg', 'png', 'gif'}  # Allow image file types
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -32,17 +32,18 @@ def upload_file():
     if 'file' not in request.files:
         return jsonify({"error": "No file part"}), 400
 
-    file=request.files['file']
+    file = request.files['file']
     username = request.form.get('username', 'Unknown1')
     if file.filename == '':
         return jsonify({"error": "No selected file"}), 400
 
     if allowed_file(file.filename):
-        filepath = os.path.join(UPLOAD_FOLDER, file.filename)
+        filename = f"{uuid.uuid4()}_{file.filename}"
+        filepath = os.path.join(UPLOAD_FOLDER, filename)
         file.save(filepath)
 
         #send file to chat
-        file_url = f"/download/{file.filename}"
+        file_url = f"/download/{filename}"
         
         socketio.emit('message', {
             'username': username, 
