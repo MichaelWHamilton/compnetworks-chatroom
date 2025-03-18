@@ -190,7 +190,17 @@ socket.on('message', function(data) {
             img.style.maxWidth = "100%";
             img.style.height = "auto";
             fileLink.appendChild(img);
-        } else {
+        } 
+        // Check if the file is a video
+        else if (/\.(mp4|mov|avi|webm)$/i.test(data.file_url)) {
+            var video = document.createElement("video");
+            video.src = fileLink.href;
+            video.controls = true;
+            video.style.maxWidth = "100%";
+            video.style.height = "auto";
+            fileLink.appendChild(video);
+        } 
+        else {
             fileLink.textContent = data.message;
         }
 
