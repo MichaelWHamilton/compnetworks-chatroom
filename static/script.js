@@ -193,6 +193,14 @@ socket.on('message', function(data) {
     // Append username and message to messageDiv
     messageDiv.appendChild(usernameSpan);
     messageDiv.appendChild(messageSpan);
+
+    // Apply the appropriate class based on the current mode
+    if (document.body.classList.contains("dark-mode")) {
+        messageDiv.classList.add("dark-mode");
+    } else {
+        messageDiv.classList.add("light-mode");
+    }
+
     messagesDiv.appendChild(messageDiv);
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
 });
@@ -230,6 +238,18 @@ toggleModeButton.addEventListener("click", function() {
         body.classList.remove("light-mode");
         body.classList.add("dark-mode");
     }
+
+    // Update message bubbles to match the current mode
+    var messageBubbles = document.querySelectorAll("#messages div");
+    messageBubbles.forEach(function(bubble) {
+        if (body.classList.contains("dark-mode")) {
+            bubble.classList.remove("light-mode");
+            bubble.classList.add("dark-mode");
+        } else {
+            bubble.classList.remove("dark-mode");
+            bubble.classList.add("light-mode");
+        }
+    });
 });
 
 /***********   Upload files   **********/
