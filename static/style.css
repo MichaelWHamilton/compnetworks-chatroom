@@ -13,7 +13,7 @@ body {
     overflow-y: scroll;
     background-color: #d3d3d3; /* Default to Light Mode Colors */
     text-shadow: 1px 1px 2px #000, -1px -1px 2px #000; /* Default to Light Mode Colors */
-    width: 98vw;
+    width: 90vw;
     height: 70vh;
     border: 1px solid black;
     border-radius: 10px;
