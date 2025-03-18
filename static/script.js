@@ -11,15 +11,60 @@ var fileInput = document.getElementById("fileInput");
 // Object to store colors for each username
 var userColors = {};
 
+// Predefined list of colors for better readability
+var readableColors = [
+    "#FFB6C1", // Light Pink
+    "#87CEFA", // Light Sky Blue
+    "#98FB98", // Pale Green
+    "#FFD700", // Gold
+    "#FF69B4", // Hot Pink
+    "#FFA07A", // Light Salmon
+    "#20B2AA", // Light Sea Green
+    "#778899", // Light Slate Gray
+    "#B0C4DE", // Light Steel Blue
+    "#32CD32", // Lime Green
+    "#FF4500", // Orange Red
+    "#DA70D6", // Orchid
+    "#EEE8AA", // Pale Goldenrod
+    "#98FB98", // Pale Green
+    "#AFEEEE", // Pale Turquoise
+    "#DB7093", // Pale Violet Red
+    "#FFEFD5", // Papaya Whip
+    "#FFDAB9", // Peach Puff
+    "#CD853F", // Peru
+    "#FFC0CB", // Pink
+    "#DDA0DD", // Plum
+    "#B0E0E6", // Powder Blue
+    "#BC8F8F", // Rosy Brown
+    "#4169E1", // Royal Blue
+    "#8B4513", // Saddle Brown
+    "#FA8072", // Salmon
+    "#F4A460", // Sandy Brown
+    "#2E8B57", // Sea Green
+    "#FFF5EE", // Seashell
+    "#A0522D", // Sienna
+    "#C0C0C0", // Silver
+    "#87CEEB", // Sky Blue
+    "#6A5ACD", // Slate Blue
+    "#708090", // Slate Gray
+    "#FFFAFA", // Snow
+    "#00FF7F", // Spring Green
+    "#4682B4", // Steel Blue
+    "#D2B48C", // Tan
+    "#008080", // Teal
+    "#D8BFD8", // Thistle
+    "#FF6347", // Tomato
+    "#40E0D0", // Turquoise
+    "#EE82EE", // Violet
+    "#F5DEB3", // Wheat
+    "#F5F5F5", // White Smoke
+    "#FFFF00", // Yellow
+    "#9ACD32"  // Yellow Green
+];
 
-// Function to generate a random color
-function getRandomColor() {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
+// Function to get a random color from the predefined list
+function getRandomReadableColor() {
+    return readableColors[Math.floor(Math.random() * readableColors.length)];
 }
 
 // Function to format message text with username colors
@@ -111,8 +156,6 @@ document.addEventListener("click", function (event) {
     }
 });
 
-
-
 // Listen for messages
 socket.on('message', function(data) {
     var messageDiv = document.createElement("div");
@@ -120,8 +163,8 @@ socket.on('message', function(data) {
     // Assign colors if not already assigned
     if (!userColors[data.username]) {
         userColors[data.username] = {
-            usernameColor: getRandomColor(),
-            messageColor: getRandomColor()
+            usernameColor: getRandomReadableColor(),
+            messageColor: getRandomReadableColor()
         };
     }
 
@@ -155,18 +198,17 @@ socket.on('message', function(data) {
 });
 
 // Send message ensuring username is included
-//TODO: come back here after
-// input.addEventListener("keypress", function(event) {
-//     if (event.key === "Enter" && input.value.trim()) {
-//         var message = input.value;
-//         console.log("📤 Sending msg: ", message);
+input.addEventListener("keypress", function(event) {
+    if (event.key === "Enter" && input.value.trim()) {
+        var message = input.value;
+        console.log("📤 Sending msg: ", message);
 
-//         socket.emit('message', { username: username, message: message });
+        socket.emit('message', { username: username, message: message });
 
-//         input.value = "";
-//         autocompleteBox.innerHTML = ""; // Clear suggestions
-//     }
-// });
+        input.value = "";
+        autocompleteBox.innerHTML = ""; // Clear suggestions
+    }
+});
 
 socket.on('connect', function(){
     console.log("connected to websocket server");
@@ -177,7 +219,6 @@ socket.on('set_username', function(data){
     username = data.username;
     console.log("Username: ", username);
 });
-
 
 // Toggle dark/light mode
 toggleModeButton.addEventListener("click", function() {
@@ -191,17 +232,9 @@ toggleModeButton.addEventListener("click", function() {
     }
 });
 
-
-
-
 /***********   Upload files   **********/
 
 function uploadFile(file) {
-    // if(!file) {
-    //     alert("Please select a file first!");
-    //     return;
-    // }
-    
     let formData = new FormData();
     formData.append("file", file);
     formData.append("username", username);
@@ -212,14 +245,7 @@ function uploadFile(file) {
     })
     .then(response => response.json())
     .then(data => {
-        
         if(data.file_url) {
-            
-            // socket.emit("message", {
-            //     username: username,
-            //     message: `Uploaded a file: ${data.file_name}`,
-            //     file_url: data.file_url
-            // });
             fileUploadAlert("success", `Your file "${data.file_name}" was successfully uploaded!`);
         }
         else {
@@ -230,7 +256,6 @@ function uploadFile(file) {
 }
 
 function fileUploadAlert(status, message) {
-
     const alertStyles={
         success: {backgroundColor: "#4CAF50", textColor: "white"},
         fail: {backgroundColor: "#f44336", textColor: "white"}
@@ -238,8 +263,6 @@ function fileUploadAlert(status, message) {
 
     let alertBox = document.createElement("div");
     alertBox.textContent = message;
-
-
 
     alertBox.style.backgroundColor = alertStyles[status]?.backgroundColor || "gray";
     alertBox.style.color = alertStyles[status]?.textColor || "white";
@@ -251,7 +274,7 @@ function fileUploadAlert(status, message) {
     setTimeout(() => alertBox.remove(), 5000);
 };
 
-//assign file
+// Assign file
 fileInput.addEventListener("change", function(){
     if(fileInput.files.length > 0){
         pendingFile = fileInput.files[0];
@@ -259,27 +282,19 @@ fileInput.addEventListener("change", function(){
     }
 });
 
-
-
-//****sending messages or files***** //
-
-//handle send button click
+// Handle send button click
 sendButton.addEventListener("click", function(){
     sendMessageOrFile();
 });
 
-//handle enter press for sending
+// Handle enter press for sending
 input.addEventListener("keypress", function(event){
     if(event.key === "Enter" && input.value.trim()){
         sendMessageOrFile();
     }
 });
 
-
-
-/*******   Handle files and messaging   ******/
-
-//handle sending message or file 
+// Handle sending message or file 
 function sendMessageOrFile() {
     if(pendingFile){
         uploadFile(pendingFile);
